@@ -1,23 +1,35 @@
 #include "screen.hpp"
 
 Screen::Screen(){
-    // Taille de l'affichage : 128x64 pixels, chaque pixel sera x4 plus grand
-    const int screenWidth = 128;
-    const int screenHeight = 32;
-    const int scale = 4;
 
     // Créez une fenêtre SFML avec l'échelle appliquée
-    sf::RenderWindow window(sf::VideoMode(screenWidth * scale, screenHeight * scale), "Dot Matrix Display");
+    sf::RenderWindow window(sf::VideoMode(screenWidth * scale, screenHeight * scale), "RF-5800V-HH emulator");
 
     // Définir la taille d'un pixel agrandi (4x4)
     sf::RectangleShape pixel(sf::Vector2f(scale, scale));
 
-    // Simuler quelques pixels allumés
-    bool dotMatrix[screenWidth][screenHeight] = {false};
+    /*for(int y; y < screenHeight; y++){  
+        for(int x; x < screenWidth; x++){
+            dotMatrix[x][y] = false;   
+        } 
+    } */
 
-    for(int a = 0; a < screenHeight; a++){
-        dotMatrix[1][a] = true;  
-    }     
+    Alphabet alph;
+
+    char up[] = "R BAT      VULOS" ;
+
+    alph.printString(up, 3, 1, 1, dotMatrix);
+
+    alph.printChar('>', 0, 1, 7, dotMatrix);
+    alph.printChar('>', 0, 1, 15, dotMatrix);
+
+    char channel1[] = "446.00625$@%";
+    alph.printString(channel1, 5, 10, 7, dotMatrix);
+    char channel2[] = "446.12675";
+    alph.printString(channel2, 5, 10, 15, dotMatrix);
+
+    char down[] = "H   N S BUSY TDR FM VOX DCS U/V KEY"; 
+    alph.printString(down, 3, 1, 25, dotMatrix);
 
     // Boucle principale de la fenêtre
     while (window.isOpen()) {
@@ -34,7 +46,7 @@ Screen::Screen(){
             for (int y = 0; y < screenHeight; ++y) {
                 if (dotMatrix[x][y]) {
                     pixel.setPosition(x * scale, y * scale);  // Positionner le pixel
-                    pixel.setFillColor(sf::Color::Black);    // Couleur du pixel allumé
+                    pixel.setFillColor(sf::Color(70, 70, 20));    // Couleur du pixel allumé
                     window.draw(pixel);                      // Dessiner le pixel
                 }
             }
